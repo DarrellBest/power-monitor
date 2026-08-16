@@ -1,0 +1,8 @@
+[Unit]
+Description=Power monitor weekly report (renders 7 day graph, posts to Discord)
+
+[Service]
+Type=oneshot
+# Adjust WorkingDirectory / python3 to match your clone and interpreter.
+WorkingDirectory=%h/power-monitor
+ExecStart=/usr/bin/env python3 scripts/weekly_report.py

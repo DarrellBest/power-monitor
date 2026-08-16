@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the power monitor weekly report once a week on Sunday at 20:00
+
+[Timer]
+OnCalendar=Sun *-*-* 20:00:00
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

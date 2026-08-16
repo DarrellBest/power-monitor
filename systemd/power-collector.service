@@ -1,0 +1,17 @@
+[Unit]
+Description=Power monitor collector (samples every configured machine into SQLite)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust WorkingDirectory if you cloned somewhere other than ~/power-monitor,
+# and ExecStart's python3 if the interpreter with psutil/requests/matplotlib
+# installed is not the one on PATH (e.g. a virtualenv or conda interpreter).
+WorkingDirectory=%h/power-monitor
+ExecStart=/usr/bin/env python3 -m scripts.run_sampler_loop
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

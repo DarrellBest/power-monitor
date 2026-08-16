@@ -1,0 +1,58 @@
+# power-monitor configuration.
+#
+# Copy this file to config.toml (gitignored) next to it and edit:
+#     cp config.example.toml config.toml
+# Or keep it anywhere and point $POWER_MONITOR_CONFIG at it.
+#
+# Relative paths resolve against this file's own directory, so a repo cloned
+# anywhere works without edits.
+
+[general]
+db_path = "power.db"                # SQLite database; created on first run
+reports_dir = "reports"             # generated PNG graphs land here
+discord_env_path = ".env.discord"   # DISCORD_BOT_TOKEN / DISCORD_CHANNEL_ID live here
+
+rate_per_kwh = 0.149                # your electricity rate in $/kWh, off your bill
+spike_threshold_watts = 1450.0      # combined estimated draw across ALL machines
+spike_cooldown_seconds = 900        # minimum gap between recorded spike events
+sample_interval_seconds = 10        # how often every machine is polled
+
+raw_retention_days = 30             # per-sample rows kept this long
+hourly_retention_days = 730         # hourly summaries kept this long (2 years)
+report_retention_days = 30          # PNGs in reports_dir kept this long
+
+# One [[machines]] block per machine. Order sets the graph colour order.
+#
+#   name      stable key stored in every database row — renaming it orphans that
+#             machine's history, so pick it once and leave it alone
+#   label     display name used in Discord messages and graph legends
+#   collector one of: local, lhm, ssh_nvidia (see each block below)
+
+# "local" — the machine power-monitor itself runs on. CPU watts from the kernel's
+# powercap/RAPL energy counter, GPU watts/utilization from nvidia-smi if present,
+# plus CPU/disk/network utilization and top processes.
+[[machines]]
+name = "server"
+label = "My Server"
+collector = "local"
+# rapl_path = "/sys/class/powercap/intel-rapl:0"   # optional, if package power is another zone
+
+# "lhm" — a Windows box running LibreHardwareMonitor with its "Remote Web Server"
+# enabled. Reports CPU package and GPU watts.
+[[machines]]
+name = "desktop"
+label = "Gaming PC"
+collector = "lhm"
+url = "http://desktop.lan:8085/data.json"   # hostname or IP of the Windows box
+# timeout_seconds = 5                              # optional HTTP timeout
+
+# "ssh_nvidia" — any remote Linux box with an NVIDIA GPU, polled by running
+# nvidia-smi over SSH. Needs passwordless key auth (BatchMode=yes); GPU only.
+[[machines]]
+name = "gpu-box"
+label = "GPU Box"
+collector = "ssh_nvidia"
+host = "gpu-box.lan"
+user = "me"
+ssh_key = "keys/gpu-box"    # relative to this config file's directory
+# timeout_seconds = 10                             # optional SSH timeout

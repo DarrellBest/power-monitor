@@ -1,0 +1,7 @@
+config.toml
+keys/
+.superpowers/
+power.db
+reports/
+.env.discord
+__pycache__/
