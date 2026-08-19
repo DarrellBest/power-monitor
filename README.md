@@ -168,3 +168,18 @@ power_monitor/
 scripts/         run_sampler_loop.py, alert_check.py, weekly_report.py
 systemd/         user units for the collector, watchdog timer and report timer
 ```
+
+## License
+
+[PolyForm Noncommercial License 1.0.0](LICENSE) — free to use, modify, and
+share for personal use and any other noncommercial purpose.
+
+- **Commercial use** is not granted by this license. Commercial licenses are
+  available: email `power-monitor@darrellbest.com` with the subject line "commercial licensing".
+- **Attribution required.** Anything distributed, derived from, or built on
+  this project must give visible credit to Darrell Best and link this
+  repository, somewhere a user or reader will actually see it — documentation,
+  an about/credits screen, or equivalent. Preserving source-file copyright
+  headers alone is not sufficient.
+
+See [`LICENSE`](LICENSE) for the full license text and the Additional Terms.
